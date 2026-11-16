@@ -1,0 +1,26 @@
+stealth@Netology:~/docker$ docker run -d --name "FomenkoVV-custom-nginx-t2" -p 127.0.0.1:8080:80 custom-nginx:1.0.0
+bea3405ccb5bd077e58fcbddd82c907141a3aa84459545e98add9ec9f77db9cb
+stealth@Netology:~/docker$ docker image ls
+                                                                                                                                      i
+IMAGE                             ID             DISK USAGE   CONTENT SIZE   EXTRA
+custom-nginx:1.0.0                6528c30bfcb5        279MB         72.2MB    U   
+nginx:1.29.0                      3ab4ed065a14        282MB         75.4MB    U   
+stealthsochi/custom-nginx:1.0.0   6528c30bfcb5        279MB         72.2MB    U   
+test/nginx:1.29.0                 6528c30bfcb5        279MB         72.2MB    U   
+stealth@Netology:~/docker$ docker ps
+CONTAINER ID   IMAGE                COMMAND                  CREATED              STATUS              PORTS                    NAMES
+bea3405ccb5b   custom-nginx:1.0.0   "/docker-entrypoint.…"   About a minute ago   Up About a minute   127.0.0.1:8080->80/tcp   FomenkoVV-custom-nginx-t2
+stealth@Netology:~/docker$ docker rename "FomenkoVV-custom-nginx-t2" custom-nginx-t2
+stealth@Netology:~/docker$ docker ps
+CONTAINER ID   IMAGE                COMMAND                  CREATED         STATUS         PORTS                    NAMES
+bea3405ccb5b   custom-nginx:1.0.0   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   127.0.0.1:8080->80/tcp   custom-nginx-t2
+stealth@Netology:~/docker$ curl http://127.0.0.1:8080
+<html>
+<head>
+Hey, Netology
+</head>
+<body>
+<h1>I will be DevOps Engineer!</h1>
+</body>
+</html>
+stealth@Netology:~/docker$ 

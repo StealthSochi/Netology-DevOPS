@@ -1,0 +1,34 @@
+stealth@Netology:~/docker$ mkdir data
+stealth@Netology:~/docker$ docker run -d --name centos-docker -v "$(pwd):/data" centos:7 sleep infinity
+Unable to find image 'centos:7' locally
+7: Pulling from library/centos
+2d473b07cdd5: Pull complete 
+Digest: sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
+Status: Downloaded newer image for centos:7
+e07629e5124c1da422da2367d59a0f5167dfc7c0164c5849b1e5d9a8f273069a
+stealth@Netology:~/docker$ docker run -d --name debian-docker -v "$(pwd):/data" debian:bookworm-slim sleep infinity
+Unable to find image 'debian:bookworm-slim' locally
+bookworm-slim: Pulling from library/debian
+dd051e1b8c92: Pull complete 
+91fa335226d3: Download complete 
+Digest: sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+Status: Downloaded newer image for debian:bookworm-slim
+67562b6b2ff6c7e45232bc693b37b49e6b1ddc557815f93accea6332fdfafbc8
+stealth@Netology:~/docker$ docker ps
+CONTAINER ID   IMAGE                  COMMAND            CREATED             STATUS             PORTS     NAMES
+67562b6b2ff6   debian:bookworm-slim   "sleep infinity"   About an hour ago   Up About an hour             debian-docker
+e07629e5124c   centos:7               "sleep infinity"   About an hour ago   Up About an hour             centos-docker
+stealth@Netology:~/docker$ docker exec -it debian-docker bash
+root@67562b6b2ff6:/# cd /data/
+root@67562b6b2ff6:/data# echo 'Hello from Debain' > hello_debian.txt
+root@67562b6b2ff6:/data# cat hello_debian.txt 
+root@67562b6b2ff6:/data# exit
+exit
+stealth@Netology:~/docker$ ls
+Dockerfile  hello_debian.txt  index.html
+stealth@Netology:~/docker$ echo 'Host Hello' > hello_host.txt
+stealth@Netology:~/docker$ docker exec -it centos-docker bash
+[root@e07629e5124c /]# cd /data/
+[root@e07629e5124c data]# ls
+Dockerfile  hello_debian.txt  hello_host.txt  index.html
+[root@e07629e5124c data]# 

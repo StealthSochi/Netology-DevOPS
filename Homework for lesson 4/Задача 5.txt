@@ -1,0 +1,179 @@
+stealth@Netology:~/docker/task5$ ls
+compose.yaml  docker-compose.yaml
+stealth@Netology:~/docker/task5$ docker compose up -d
+WARN[0000] Found multiple config files with supported names: /home/stealth/docker/task5/compose.yaml, /home/stealth/docker/task5/docker-compose.yaml 
+WARN[0000] Using /home/stealth/docker/task5/compose.yaml 
+WARN[0000] /home/stealth/docker/task5/compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Running 10/10
+ ✔ portainer Pulled                                                                                                                                 13.7s 
+   ✔ 2434475123a9 Pull complete                                                                                                                      2.9s 
+   ✔ 0aabb09e001b Pull complete                                                                                                                      1.6s 
+   ✔ 75fc697482a7 Pull complete                                                                                                                      7.9s 
+   ✔ 31052075cd93 Pull complete                                                                                                                      7.1s 
+   ✔ 4f4fb700ef54 Pull complete                                                                                                                      2.1s 
+   ✔ 17dbf2971c2f Pull complete                                                                                                                      3.6s 
+   ✔ be12379f98dc Pull complete                                                                                                                      3.8s 
+   ✔ cf0caba185de Download complete                                                                                                                  0.7s 
+   ✔ 93fa03659a75 Download complete                                                                                                                  0.7s 
+[+] Running 1/1
+ ✔ Container task5-portainer-1  Started                                                                                                              6.9s 
+stealth@Netology:~/docker/task5$ 
+===========================================================================================================================
+
+"docker compose up -d". Какой из файлов был запущен и почему?
+был выбран compose.yaml так как он приоритетней docker-compose.yaml
+
+===========================================================================================================================
+
+stealth@Netology:~/docker/task5$ docker compose -f compose.yaml config
+WARN[0000] /home/stealth/docker/task5/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/stealth/docker/task5/compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+name: task5
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    network_mode: host
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        bind:
+          create_host_path: true
+  registry:
+    image: registry:2
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 5000
+        published: "5000"
+        protocol: tcp
+networks:
+  default:
+    name: task5_default
+
+stealth@Netology:~/docker/task5$ docker compose down 
+WARN[0000] Found multiple config files with supported names: /home/stealth/docker/task5/compose.yaml, /home/stealth/docker/task5/docker-compose.yaml 
+WARN[0000] Using /home/stealth/docker/task5/compose.yaml 
+WARN[0000] /home/stealth/docker/task5/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/stealth/docker/task5/compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Running 1/1
+ ✔ Container task5-portainer-1  Removed                                                                                                              1.0s 
+stealth@Netology:~/docker/task5$ docker compose up -d
+WARN[0000] Found multiple config files with supported names: /home/stealth/docker/task5/compose.yaml, /home/stealth/docker/task5/docker-compose.yaml 
+WARN[0000] Using /home/stealth/docker/task5/compose.yaml 
+WARN[0000] /home/stealth/docker/task5/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] /home/stealth/docker/task5/compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Running 8/8
+ ✔ registry Pulled                                                                                                                                   7.6s 
+   ✔ 6d464ea18732 Pull complete                                                                                                                      1.2s 
+   ✔ 3493bf46cdec Pull complete                                                                                                                      3.6s 
+   ✔ bbbdd6c6894b Pull complete                                                                                                                      2.9s 
+   ✔ 44cf07d57ee4 Pull complete                                                                                                                      2.5s 
+   ✔ 8e82f80af0de Pull complete                                                                                                                      3.4s 
+   ✔ 32a76c78501f Download complete                                                                                                                  0.6s 
+   ✔ b537bf6d1146 Download complete                                                                                                                  0.3s 
+[+] Running 3/3
+ ✔ Network task5_default        Created                                                                                                              0.1s 
+ ✔ Container task5-registry-1   Started                                                                                                              3.9s 
+ ✔ Container task5-portainer-1  Started                                                                                                              3.8s 
+stealth@Netology:~/docker/task5$ 
+stealth@Netology:~/docker/task5$ docker pull stealthsochi/custom-nginx:1.0.0
+1.0.0: Pulling from stealthsochi/custom-nginx
+9dbfe0b105c9: Pull complete 
+fea7cebc499c: Pull complete 
+c5ada5e7d698: Pull complete 
+856c000ad0ec: Pull complete 
+b1badc6e5066: Pull complete 
+85003794a6a5: Pull complete 
+dea1652b095a: Pull complete 
+067f43712c03: Pull complete 
+Digest: sha256:6528c30bfcb51af3a9d156ce34d716cfdc01f5d2f23fd3e54adbb39900929884
+Status: Downloaded newer image for stealthsochi/custom-nginx:1.0.0
+docker.io/stealthsochi/custom-nginx:1.0.0
+stealth@Netology:~/docker/task5$ docker tag stealthsochi/custom-nginx:1.0.0 127.0.0.1:5000/custom-nginx:latest
+stealth@Netology:~/docker/task5$ docker push 127.0.0.1:5000/custom-nginx:latest
+The push refers to repository [127.0.0.1:5000/custom-nginx]
+856c000ad0ec: Pushed 
+067f43712c03: Pushed 
+9dbfe0b105c9: Pushed 
+=================================================================================================================
+
+{
+AppArmorProfile:"docker-default",
+Args:[],
+Config:{
+AttachStderr:true,
+AttachStdin:false,
+AttachStdout:true,
+Cmd:[
+"nginx",
+"-g",
+"daemon off;"
+],
+Domainname:"",
+Entrypoint:[
+"/docker-entrypoint.sh"
+],
+Env:[
+"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+"NGINX_VERSION=1.29.0",
+"NJS_VERSION=0.9.0",
+"NJS_RELEASE=1~bookworm",
+"PKG_RELEASE=1~bookworm",
+"DYNPKG_RELEASE=1~bookworm"
+],
+ExposedPorts:{
+80/tcp:{}
+},
+Hostname:"83798eec22b5",
+Image:"127.0.0.1:5000/custom-nginx",
+Labels:{
+com.docker.compose.config-hash:"8b9fe9ab3a7934244a4cb3d97ea83abe99d1849b88a7d7931370a021dd008c42",
+com.docker.compose.container-number:"1",
+com.docker.compose.depends_on:"",
+com.docker.compose.image:"sha256:6528c30bfcb51af3a9d156ce34d716cfdc01f5d2f23fd3e54adbb39900929884",
+com.docker.compose.oneoff:"False",
+com.docker.compose.project:"webstack",
+com.docker.compose.project.config_files:"/data/compose/1/docker-compose.yml",
+com.docker.compose.project.working_dir:"/data/compose/1",
+com.docker.compose.service:"nginx",
+com.docker.compose.version:"",
+maintainer:"NGINX Docker Maintainers <docker-maint@nginx.com>"
+},
+OpenStdin:false,
+StdinOnce:false,
+StopSignal:"SIGQUIT",
+Tty:false,
+User:"",
+Volumes:null,
+WorkingDir:""
+},
+Created:"2026-11-16T10:06:19.827892788Z",
+Driver:"overlayfs",
+=========================================================================================================
+
+stealth@Netology:~/docker/task5$ ls
+compose.yaml  docker-compose.yaml
+stealth@Netology:~/docker/task5$ rm compose.yaml 
+stealth@Netology:~/docker/task5$ docker compose up -d
+WARN[0000] /home/stealth/docker/task5/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] Found orphan containers ([task5-portainer-1]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up. 
+[+] Running 1/1
+ ✔ Container task5-registry-1  Running                                                                                                                              0.0s 
+stealth@Netology:~/docker/task5$ 
+=====================
+Ранее созданные контейнеры не описаны в текущей конфиграции из-за удаления compose.yaml 
+он предлагает запустить с параметром  --remove-orphans
+=====================
+stealth@Netology:~/docker/task5$ docker compose up -d --remove-orphans
+WARN[0000] /home/stealth/docker/task5/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Running 2/2
+ ✔ Container task5-portainer-1  Removed                                                                                                                                                                                            1.2s 
+ ✔ Container task5-registry-1   Running                                                                                                                                                                                            0.0s 
+stealth@Netology:~/docker/task5$ docker compose down --remove-orphans
+WARN[0000] /home/stealth/docker/task5/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Running 2/2
+ ✔ Container task5-registry-1  Removed                                                                                                                                                                                             1.5s 
+ ✔ Network task5_default       Removed                                                                                                                                                                                             0.4s 
+stealth@Netology:~/docker/task5$ 
